@@ -47,4 +47,9 @@ public class GroupManage implements Serializable{
 		members.add(m);
 	}
 	
+	public void removeMember(MemberManage m)
+	{
+		members.remove(m);
+	}
+	
 }
