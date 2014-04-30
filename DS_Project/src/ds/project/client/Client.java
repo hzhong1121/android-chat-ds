@@ -203,6 +203,9 @@ public class Client  {
 			else if(msg.split(" ")[0].equalsIgnoreCase("LEAVE") && msg.split(" ").length==2) {
 				client.sendMessage(new ChatMessage(ChatMessage.LEAVE, msg.split(" ")[1]));
 			}
+			else if(msg.split(" ")[0].equalsIgnoreCase("BROADCASTTOALL")) {
+				client.sendMessage(new ChatMessage(ChatMessage.BROADCASTTOALL, msg.substring(15)));
+			}
 			else {				// default to ordinary message
 				client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, msg));
 			}

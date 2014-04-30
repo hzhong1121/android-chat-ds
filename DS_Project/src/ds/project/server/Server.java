@@ -307,7 +307,7 @@ public class Server {
 						broadcast(username + " has joined group " + gs.groupId);
 						break;
 					} else {
-						broadcast(username + ": group " + message + " does not exist.");
+						writeMsg(username + ": group " + message + " does not exist.");
 						break;
 					}
 					
@@ -317,13 +317,16 @@ public class Server {
 							broadcast(username + " has left group " + gs.groupId);
 							break;
 						} else {
-							broadcast(username + ": failed to leave group " + gs.groupId);
+							writeMsg(username + ": failed to leave group " + gs.groupId);
 							break;
 						}
 					} else {
-						broadcast(username + ": there is no group " + gs.groupId);
+						writeMsg(username + ": there is no group " + message);
 						break;
 					}
+				case ChatMessage.BROADCASTTOALL:
+					broadcast(username + ": " + message);
+					break;
 				}
 			}
 			// remove myself from the arrayList containing the list of the
