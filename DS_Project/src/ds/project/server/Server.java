@@ -21,7 +21,7 @@ public class Server {
 	// the boolean that will be turned of to stop the server
 	private boolean keepGoing;
 	// the list of groups
-	private ArrayList<Group> gs;
+	private Group gs;
 
 	/*
 	 *  server constructor that receive the port to listen to for connection as parameter
@@ -38,8 +38,6 @@ public class Server {
 		sdf = new SimpleDateFormat("HH:mm:ss");
 		// ArrayList for the Client list
 		al = new ArrayList<ClientThread>();
-		// ArrayList for the members in the Group List
-		gs = new ArrayList<Group>();
 	}
 	
 	public void start() {
@@ -263,9 +261,12 @@ public class Server {
 					break;
 				case ChatMessage.CREATE:
 					Group group = new Group(message, username);
-					gs.add(group);
-					broadcast(username + ": " + message);
+					group.addMember(id);
+					gs = group;
+					broadcast(username + ": " + message + " is created!");
 					break;
+				case ChatMessage.JOIN:
+					gs.addMember(id);
 				}
 			}
 			// remove myself from the arrayList containing the list of the
