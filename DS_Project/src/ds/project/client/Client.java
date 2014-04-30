@@ -197,6 +197,12 @@ public class Client  {
 			else if(msg.split(" ")[0].equalsIgnoreCase("CREATE") && msg.split(" ").length==2) {
 				client.sendMessage(new ChatMessage(ChatMessage.CREATE, msg.split(" ")[1]));
 			}
+			else if(msg.split(" ")[0].equalsIgnoreCase("JOIN") && msg.split(" ").length==2) {
+				client.sendMessage(new ChatMessage(ChatMessage.JOIN, msg.split(" ")[1]));
+			}
+			else if(msg.split(" ")[0].equalsIgnoreCase("LEAVE") && msg.split(" ").length==2) {
+				client.sendMessage(new ChatMessage(ChatMessage.LEAVE, msg.split(" ")[1]));
+			}
 			else {				// default to ordinary message
 				client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, msg));
 			}

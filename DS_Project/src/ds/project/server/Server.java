@@ -111,6 +111,39 @@ public class Server {
 		//else
 		//	sg.appendEvent(time + "\n");
 	}
+	
+	// broadcast message to group members
+	private synchronized void broadcastToGroup(String message) {
+		// add HH:mm:ss and \n to the message
+				String time = sdf.format(new Date());
+				String messageLf = time + " " + message + "\n";
+				// display message on console
+				System.out.print(messageLf);
+
+				
+				// we loop in reverse order in case we would have to remove a Client
+				// because it has disconnected
+				for(int i = al.size(); --i >= 0;) {
+					ClientThread ct = al.get(i);
+					// stop broadcasting message if client is not in group
+					boolean marker = false;
+					if (gs != null) {
+						for (int id : gs.groupMembers) {
+							if (id == ct.id)
+								marker = true;
+						}
+					}
+					
+					if (marker) {
+						// try to write to the Client if it fails remove it from the list
+						if(!ct.writeMsg(messageLf)) {
+							al.remove(i);
+							display("Disconnected Client " + ct.username + " removed from list.");
+						}
+					}
+				}
+	}
+	
 	/*
 	 *  to broadcast a message to all Clients
 	 */
@@ -118,16 +151,15 @@ public class Server {
 		// add HH:mm:ss and \n to the message
 		String time = sdf.format(new Date());
 		String messageLf = time + " " + message + "\n";
-		// display message on console or GUI
-		//if(sg == null)
-			System.out.print(messageLf);
-		//else
-		//	sg.appendRoom(messageLf);     // append in the room window
+		// display message on console
+		System.out.print(messageLf);
+
 		
 		// we loop in reverse order in case we would have to remove a Client
 		// because it has disconnected
 		for(int i = al.size(); --i >= 0;) {
 			ClientThread ct = al.get(i);
+			
 			// try to write to the Client if it fails remove it from the list
 			if(!ct.writeMsg(messageLf)) {
 				al.remove(i);
@@ -245,7 +277,7 @@ public class Server {
 				switch(cm.getType()) {
 
 				case ChatMessage.MESSAGE:
-					broadcast(username + ": " + message);
+					broadcastToGroup(username + ": " + message);
 					break;
 				case ChatMessage.LOGOUT:
 					display(username + " disconnected with a LOGOUT message.");
@@ -260,13 +292,38 @@ public class Server {
 					}
 					break;
 				case ChatMessage.CREATE:
+					if (gs != null && gs.groupId.equalsIgnoreCase(message)) {
+						broadcast(username + ": group " + message + " has already been created!");
+						break;
+					}
 					Group group = new Group(message, username);
 					group.addMember(id);
 					gs = group;
-					broadcast(username + ": " + message + " is created!");
+					broadcast(username + ": group " + message + " is created!");
 					break;
 				case ChatMessage.JOIN:
-					gs.addMember(id);
+					if (gs.groupId.equalsIgnoreCase(message)) {
+						gs.addMember(id);
+						broadcast(username + " has joined group " + gs.groupId);
+						break;
+					} else {
+						broadcast(username + ": group " + message + " does not exist.");
+						break;
+					}
+					
+				case ChatMessage.LEAVE:
+					if(message.equalsIgnoreCase(gs.groupId)) {
+						if(gs.removeMember(id)) {
+							broadcast(username + " has left group " + gs.groupId);
+							break;
+						} else {
+							broadcast(username + ": failed to leave group " + gs.groupId);
+							break;
+						}
+					} else {
+						broadcast(username + ": there is no group " + gs.groupId);
+						break;
+					}
 				}
 			}
 			// remove myself from the arrayList containing the list of the
