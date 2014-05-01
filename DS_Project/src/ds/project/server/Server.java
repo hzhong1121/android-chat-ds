@@ -302,7 +302,7 @@ public class Server {
 					broadcast(username + ": group " + message + " is created!");
 					break;
 				case ChatMessage.JOIN:
-					if (gs.groupId.equalsIgnoreCase(message)) {
+					if (gs != null && gs.groupId.equalsIgnoreCase(message)) {
 						if (gs.addMember(id)) {
 							broadcast(username + " has joined group " + gs.groupId);
 							break;
