@@ -2,11 +2,7 @@ package com.example.android_chat_ds;
 
 import java.io.Serializable;
 
-import android.content.Context;
-
 public class Connection implements Serializable {
-	
-	Context context;
 	
 	private static final long serialVersionUID = 5347942587740525350L;
 	private ConnectServer connections ;
