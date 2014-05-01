@@ -303,9 +303,13 @@ public class Server {
 					break;
 				case ChatMessage.JOIN:
 					if (gs.groupId.equalsIgnoreCase(message)) {
-						gs.addMember(id);
-						broadcast(username + " has joined group " + gs.groupId);
-						break;
+						if (gs.addMember(id)) {
+							broadcast(username + " has joined group " + gs.groupId);
+							break;
+						} else {
+							broadcast(username + ": failed to join group " + gs.groupId);
+							break;
+						}
 					} else {
 						writeMsg(username + ": group " + message + " does not exist.");
 						break;

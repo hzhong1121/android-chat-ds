@@ -19,13 +19,22 @@ public class Group {
 		
 	}
 	
-	public void addMember(int user) {
-		this.groupMembers.add(user);
-		this.capacity++;
+	public boolean addMember(int user) {
+		boolean marker = false;
+		if (groupMembers.contains(user))
+			return marker;
+		marker = this.groupMembers.add(user);
+		if (marker)
+			this.capacity++;
+		return marker;
 	}
 	
 	public boolean removeMember(Integer user) {
-		return this.groupMembers.remove(user);
+		boolean marker = false;
+		marker = this.groupMembers.remove(user);
+		if (marker)
+			this.capacity--;
+		return marker;
 	}
 
 	public int getCapacity() {
