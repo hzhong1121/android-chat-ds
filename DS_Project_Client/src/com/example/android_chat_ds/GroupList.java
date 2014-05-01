@@ -19,7 +19,7 @@ public class GroupList {
          return users;  
      }  
      
-     public void setContent(ArrayList<MemberList> user) {  
+     public void setGroupUser(ArrayList<MemberList> user) {  
 		this.users = user;  
      }          
 
