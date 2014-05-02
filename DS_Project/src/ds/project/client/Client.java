@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import ds.project.server.ChatMessage;
+import ds.project.server.LamportClock;
 
 /*
  * The Client that can be run both as a console or a GUI
@@ -23,6 +24,7 @@ public class Client  {
 	// the server, the port and the username
 	private String server, username;
 	private int port;
+	private LamportClock lc;
 
 
 	/*
@@ -33,6 +35,7 @@ public class Client  {
 		this.server = server;
 		this.port = port;
 		this.username = username;
+		this.lc = new LamportClock();
 	
 	}
 	

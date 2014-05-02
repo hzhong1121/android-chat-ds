@@ -73,4 +73,3 @@ public class ConnectServer implements Serializable{
 		return receiveMsg;
 	}
 }
-

@@ -226,11 +226,13 @@ public class Server {
 		ChatMessage cm;
 		// the date I connect
 		String date;
+		//LamportClock vc;
 
 		// Constructore
 		ClientThread(Socket socket) {
 			// a unique id
 			id = ++uniqueId;
+			//vc = new LamportClock();
 			this.socket = socket;
 			/* Creating both Data Stream */
 			System.out.println("Thread trying to create Object Input/Output Streams");
@@ -259,6 +261,7 @@ public class Server {
 			// to loop until LOGOUT
 			boolean keepGoing = true;
 			while(keepGoing) {
+				//vc.tick();
 				// read a String (which is an object)
 				try {
 					cm = (ChatMessage) sInput.readObject();
